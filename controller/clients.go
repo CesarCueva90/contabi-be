@@ -2,7 +2,6 @@ package controller
 
 import (
 	"contabi-be/models"
-	"contabi-be/usecase"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,11 +10,11 @@ import (
 
 // ClientsController handles basic CRUD operations for clients
 type ClientsController struct {
-	clientsUseCase usecase.ClientsService
+	clientsUseCase ClientsUsecase
 	logger         *logrus.Logger
 }
 
-func NewClientsController(clientsUseCase usecase.ClientsService, logger *logrus.Logger) *ClientsController {
+func NewClientsController(clientsUseCase ClientsUsecase, logger *logrus.Logger) *ClientsController {
 	return &ClientsController{
 		clientsUseCase: clientsUseCase,
 		logger:         logger,

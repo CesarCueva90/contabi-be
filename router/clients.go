@@ -16,25 +16,25 @@ func clientsRoutes(r *gin.Engine, clientsController ClientsController) {
 		// Gets full info of a specific client
 		clients.GET("/:id", clientsController.GetClientInfo)
 
-		// Crear un nuevo cliente con asignaciones
+		// Creates a new client with assignments
 		clients.POST("/", clientsController.CreateClient)
 
-		// Actualizar información básica del cliente
+		// Updates the basic info of a client
 		clients.PUT("/:id", clientsController.UpdateClient)
 
-		// Desactivar cliente (soft delete)
+		// Deactivates a client (soft delete)
 		clients.DELETE("/:id", clientsController.DeactivateClient)
 
-		// Activar cliente
+		// Activates a client
 		clients.PUT("/:id/activate", clientsController.ActivateClient)
 
-		// Actualizar asignaciones del cliente (supervisor, responsable, emisor)
+		// Updates the assignments of a specific client (supervisor, responsible, emisor)
 		clients.PUT("/:id/assignments", clientsController.UpdateClientAssignments)
 
 		// Get clients with pending payments
 		clients.GET("/pending-payments", clientsController.GetClientsWithPendingPayments)
 
-		// Actualizar información de pago del cliente
+		// Updates the payment info of a specific client
 		clients.PUT("/:id/payment", clientsController.UpdateClientPayment)
 	}
 }

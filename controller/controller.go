@@ -23,18 +23,33 @@ type UsersUseCase interface {
 	GetRoles() ([]models.Role, error)
 }
 
+type ClientsUsecase interface {
+	GetAllClientsInfo() ([]models.ClientInfo, error)
+	GetActiveClientsInfo() ([]models.ClientInfo, error)
+	GetClientInfo(clientID string) (models.ClientInfo, error)
+	CreateClient(client models.Client, assignments models.ClientAssignments) error
+	UpdateClient(clientID string, client models.Client) error
+	DeactivateClient(clientID string) error
+	ActivateClient(clientID string) error
+	UpdateClientAssignments(clientID string, assignments models.ClientAssignments) error
+	GetClientsWithPendingPayments() ([]models.ClientWithPendingPayment, error)
+	UpdateClientPayment(clientID string, payment models.ClientPayment) error
+}
+
 // Controller
 type Controller struct {
 	lu     LoginUseCase
 	uu     UsersUseCase
+	cu     ClientsUsecase
 	logger *logrus.Logger
 }
 
 // NewController creates a new Controllert instance
-func NewController(lu LoginUseCase, uu UsersUseCase, logger *logrus.Logger) *Controller {
+func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, logger *logrus.Logger) *Controller {
 	return &Controller{
 		lu:     lu,
 		uu:     uu,
+		cu:     cu,
 		logger: logger,
 	}
 }
