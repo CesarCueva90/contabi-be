@@ -38,20 +38,24 @@ func main() {
 	// Creates instances of the services
 	ls := database.NewLoginService(dbs.DB)
 	us := database.NewUsersService(dbs.DB)
+	cs := database.NewClientsService(dbs.DB)
 
 	// creates instances of usecase
 	lu := usecase.NewLoginUseCase(ls)
 	uu := usecase.NewUsersUseCase(us)
+	cu := usecase.NewClientsUseCase(cs)
 
 	// creates instances of controller
 	lc := controller.NewLoginController(lu, logger)
 	uc := controller.NewUsersController(uu, logger)
+	cc := controller.NewClientsController(cu, logger)
 	mw := middleware.New(lu)
 
 	// creates router instance
 	rr := router.NewRouter(
 		lc,
 		uc,
+		cc,
 		mw,
 	)
 

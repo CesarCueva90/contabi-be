@@ -23,13 +23,10 @@ func (us *UsersService) GetUsers() ([]models.User, error) {
 		SELECT 
 			u.id
 			, u.username
-			, u.branch_id
 			, u.active
 			, ur.role_id
-			, b.name
 		FROM users u
 		INNER JOIN user_role ur ON u.id = ur.user_id
-		LEFT JOIN branches b ON u.branch_id = b.id
 		ORDER BY username ASC
 	`
 

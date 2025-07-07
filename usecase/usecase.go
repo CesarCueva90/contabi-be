@@ -22,3 +22,17 @@ type UsersService interface {
 	DeleteUser(id string) error
 	GetRoles() ([]models.Role, error)
 }
+
+// ClientsService defines the interface for client CRUD operations
+type ClientsService interface {
+	GetAllClientsInfo() ([]models.ClientInfo, error)
+	GetActiveClientsInfo() ([]models.ClientInfo, error)
+	GetClientInfo(clientID string) (models.ClientInfo, error)
+	CreateClient(client models.Client, assignments models.ClientAssignments) error
+	UpdateClient(clientID string, client models.Client) error
+	DeactivateClient(clientID string) error
+	ActivateClient(clientID string) error
+	UpdateClientAssignments(clientID string, assignments models.ClientAssignments) error
+	GetClientsWithPendingPayments() ([]models.ClientWithPendingPayment, error)
+	UpdateClientPayment(clientID string, payment models.ClientPayment) error
+}

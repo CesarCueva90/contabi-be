@@ -13,7 +13,7 @@ type LoginService struct {
 	db *sql.DB
 }
 
-// NewUsersService creates a new instance of LoginService
+// NewLoginService creates a new instance of LoginService
 func NewLoginService(db *sql.DB) *LoginService {
 	return &LoginService{db: db}
 }
@@ -24,44 +24,31 @@ func (ls *LoginService) Login(login string, password string) (models.User, error
 
 	q := `
 		SELECT 
-			id
-			, username
-			, password
-			, active
+			u.id
+			, u.username
+			, u.password
+			, u.active
 			, ur.role_id
 		FROM users u
-		INNER JOIN user_role ur ON u.id = ur.user_id
-		WHERE u.username = $1
-		ORDER BY username ASC LIMIT 1
+		INNER JOIN user_roles ur ON u.id = ur.user_id
+		WHERE u.username = $1 AND u.active = true
+		LIMIT 1
 	`
 
-	rows, err := ls.db.Query(q, login)
+	row := ls.db.QueryRow(q, login)
 
-	if err != nil {
-		return user, err
-	}
-
-	defer rows.Close()
-
-	var e models.User
-	userFound := false
-
-	for rows.Next() {
-		if err := rows.Scan(&e.ID, &e.Username, &e.Password, &e.Active, &e.Role); err != nil {
-			return user, err
+	var roleID int
+	if err := row.Scan(&user.ID, &user.Username, &user.Password, &user.Active, &roleID); err != nil {
+		if err == sql.ErrNoRows {
+			return models.User{}, fmt.Errorf("user not found")
 		}
-
-		user = e
-		userFound = true
+		return models.User{}, err
 	}
 
-	// Check if user was found
-	if !userFound {
-		return models.User{}, fmt.Errorf("user not found")
-	}
+	user.Role = roleID
 
 	// Compare the hashed password with the provided password using bcrypt
-	if err := bcrypt.CompareHashAndPassword([]byte(e.Password), []byte(password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
 		return models.User{}, fmt.Errorf("invalid password")
 	}
 

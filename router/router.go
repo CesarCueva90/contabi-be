@@ -21,11 +21,25 @@ type UsersController interface {
 	GetRoles(g *gin.Context)
 }
 
+// ClientsController handles all client operations
+type ClientsController interface {
+	GetClientsInfo(c *gin.Context)
+	GetActiveClientsInfo(c *gin.Context)
+	GetClientInfo(c *gin.Context)
+	CreateClient(c *gin.Context)
+	UpdateClient(c *gin.Context)
+	DeactivateClient(c *gin.Context)
+	ActivateClient(c *gin.Context)
+	UpdateClientAssignments(c *gin.Context)
+	GetClientsWithPendingPayments(c *gin.Context)
+	UpdateClientPayment(c *gin.Context)
+}
+
 // NewRouter set the API routes and applies the middleware
 func NewRouter(
 	loginController LoginController,
 	usersController UsersController,
-
+	clientsController ClientsController,
 	mw *middleware.Middleware,
 ) *gin.Engine {
 	// Creates a new instance of Gin router
@@ -41,6 +55,7 @@ func NewRouter(
 	r.Use(mw.AuthMiddleware())
 
 	usersRoutes(r, usersController)
+	clientsRoutes(r, clientsController)
 
 	return r
 }
