@@ -36,20 +36,28 @@ type ClientsUsecase interface {
 	UpdateClientPayment(clientID string, payment models.ClientPayment) error
 }
 
+type MenusUseCase interface {
+	GetEmisors() ([]models.Emisor, error)
+	GetSupervisors() ([]models.Supervisor, error)
+	GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error)
+}
+
 // Controller
 type Controller struct {
 	lu     LoginUseCase
 	uu     UsersUseCase
 	cu     ClientsUsecase
+	mu     MenusUseCase
 	logger *logrus.Logger
 }
 
 // NewController creates a new Controllert instance
-func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, logger *logrus.Logger) *Controller {
+func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, mu MenusUseCase, logger *logrus.Logger) *Controller {
 	return &Controller{
 		lu:     lu,
 		uu:     uu,
 		cu:     cu,
+		mu:     mu,
 		logger: logger,
 	}
 }

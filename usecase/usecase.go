@@ -36,3 +36,9 @@ type ClientsService interface {
 	GetClientsWithPendingPayments() ([]models.ClientWithPendingPayment, error)
 	UpdateClientPayment(clientID string, payment models.ClientPayment) error
 }
+
+type MenusService interface {
+	GetEmisors() ([]models.Emisor, error)
+	GetSupervisors() ([]models.Supervisor, error)
+	GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error)
+}

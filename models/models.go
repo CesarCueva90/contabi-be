@@ -13,6 +13,22 @@ type Role struct {
 	Name string `json:"name"`
 }
 
+type Emisor struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type Supervisor struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type Responsible struct {
+	ID           string `json:"id"`
+	Name         string `json:"name"`
+	SupervisorID string `json:"supervisor_id"`
+}
+
 type Client struct {
 	ID             string `json:"id"`
 	Name           string `json:"name"`

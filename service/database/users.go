@@ -26,7 +26,7 @@ func (us *UsersService) GetUsers() ([]models.User, error) {
 			, u.active
 			, ur.role_id
 		FROM users u
-		INNER JOIN user_role ur ON u.id = ur.user_id
+		INNER JOIN user_roles ur ON u.id = ur.user_id
 		ORDER BY username ASC
 	`
 
@@ -58,7 +58,7 @@ func (us *UsersService) GetUserByID(userID string) (models.User, error) {
 			, u.active
 			, ur.role_id
 		FROM users u
-		INNER JOIN user_role ur ON u.id = ur.user_id
+		INNER JOIN user_roles ur ON u.id = ur.user_id
 		WHERE u.id = $1
 		ORDER BY u.username ASC LIMIT 1
 	`
@@ -96,7 +96,7 @@ func (us *UsersService) CreateUser(user models.User) error {
 	}
 
 	queryRole := `
-		INSERT INTO user_role (user_id, role_id)
+		INSERT INTO user_roles (user_id, role_id)
 		VALUES ($1, $2)
 	`
 
@@ -131,7 +131,7 @@ func (us *UsersService) UpdateUser(user models.User) error {
 // UpdateUserRole updates the user role
 func (us *UsersService) UpdateUserRole(user models.User) error {
 	q := `
-		UPDATE user_role
+		UPDATE user_roles
 		SET  role_id= $1
 		WHERE user_id = $2
 	`

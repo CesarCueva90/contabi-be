@@ -35,11 +35,18 @@ type ClientsController interface {
 	UpdateClientPayment(c *gin.Context)
 }
 
+type MenusController interface {
+	GetEmisors(g *gin.Context)
+	GetSupervisors(g *gin.Context)
+	GetResponsiblesBySupervisor(g *gin.Context)
+}
+
 // NewRouter set the API routes and applies the middleware
 func NewRouter(
 	loginController LoginController,
 	usersController UsersController,
 	clientsController ClientsController,
+	menusController MenusController,
 	mw *middleware.Middleware,
 ) *gin.Engine {
 	// Creates a new instance of Gin router
@@ -55,7 +62,10 @@ func NewRouter(
 	r.Use(mw.AuthMiddleware())
 
 	usersRoutes(r, usersController)
+
 	clientsRoutes(r, clientsController)
+
+	menusRoutes(r, menusController)
 
 	return r
 }
