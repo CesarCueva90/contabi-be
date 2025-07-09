@@ -111,3 +111,33 @@ func (ms *MenusService) GetResponsiblesBySupervisor(supervisorID string) ([]mode
 
 	return responsibles, nil
 }
+
+// GetRegimenes retrieves all regimenes
+func (ms *MenusService) GetRegimenes() ([]models.Regimen, error) {
+	q := `
+		SELECT 
+			r.id
+			, r.name
+		FROM regimenes r
+		WHERE r.active = true
+		ORDER BY name ASC
+	`
+
+	rows, err := ms.db.Query(q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var regimenes []models.Regimen
+	for rows.Next() {
+		var r models.Regimen
+		if err := rows.Scan(&r.ID, &r.Name); err != nil {
+			return nil, err
+		}
+
+		regimenes = append(regimenes, r)
+	}
+
+	return regimenes, nil
+}

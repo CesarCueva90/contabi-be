@@ -39,6 +39,7 @@ type MenusController interface {
 	GetEmisors(g *gin.Context)
 	GetSupervisors(g *gin.Context)
 	GetResponsiblesBySupervisor(g *gin.Context)
+	GetRegimenes(g *gin.Context)
 }
 
 // NewRouter set the API routes and applies the middleware

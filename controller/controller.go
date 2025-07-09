@@ -40,6 +40,7 @@ type MenusUseCase interface {
 	GetEmisors() ([]models.Emisor, error)
 	GetSupervisors() ([]models.Supervisor, error)
 	GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error)
+	GetRegimenes() ([]models.Regimen, error)
 }
 
 // Controller

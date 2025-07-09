@@ -23,6 +23,11 @@ type Supervisor struct {
 	Name string `json:"name"`
 }
 
+type Regimen struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type Responsible struct {
 	ID           string `json:"id"`
 	Name         string `json:"name"`
@@ -32,6 +37,7 @@ type Responsible struct {
 type Client struct {
 	ID             string `json:"id"`
 	Name           string `json:"name"`
+	RegimenID      string `json:"regimen_id"`
 	RFC            string `json:"rfc"`
 	ClaveCIEC      string `json:"clave_ciec"`
 	ClaveFiel      string `json:"clave_fiel"`
@@ -63,6 +69,8 @@ type ClientInfo struct {
 	ID               string `json:"id"`
 	Name             string `json:"name"`
 	RFC              string `json:"rfc"`
+	RegimenName      string `json:"regimen_name"`
+	RegimenID        string `json:"regimen_id"`
 	ClaveCIEC        string `json:"clave_ciec"`
 	ClaveFiel        string `json:"clave_fiel"`
 	FielExpiration   string `json:"fiel_expiration"`
@@ -84,6 +92,7 @@ type ClientWithPendingPayment struct {
 	ID               string `json:"id"`
 	Name             string `json:"name"`
 	RFC              string `json:"rfc"`
+	RegimenName      string `json:"regimen_name"`
 	MonthlyFee       string `json:"monthly_fee"`
 	LastPaymentMonth string `json:"last_payment_month,omitempty"`
 	LastPaymentDate  string `json:"last_payment_date,omitempty"`

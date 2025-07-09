@@ -58,6 +58,8 @@ func (cs *ClientsService) GetClientInfo(clientID string) (models.ClientInfo, err
 			fiel_expiration,
 			monthly_fee,
 			active,
+			regimen_id,
+			regimen_name,
 			supervisor_id,
 			supervisor_name,
 			responsible_id,
@@ -81,6 +83,8 @@ func (cs *ClientsService) GetClientInfo(clientID string) (models.ClientInfo, err
 		&client.FielExpiration,
 		&client.MonthlyFee,
 		&client.Active,
+		&client.RegimenID,
+		&client.RegimenName,
 		&client.SupervisorID,
 		&client.SupervisorName,
 		&client.ResponsibleID,
@@ -113,15 +117,16 @@ func (cs *ClientsService) CreateClient(client models.Client, assignments models.
 			, clave_fiel
 			, fiel_expiration
 			, monthly_fee
+			, regimen_id
 		) VALUES (
-			$1, $2, $3, $4, $5, $6
+			$1, $2, $3, $4, $5, $6, $7
 		)
 		RETURNING id
 	`
 
 	row := tx.QueryRow(
 		q, client.Name, client.RFC, client.ClaveCIEC, client.ClaveFiel,
-		client.FielExpiration, client.MonthlyFee,
+		client.FielExpiration, client.MonthlyFee, client.RegimenID,
 	)
 	if err := row.Scan(&assignments.ClientID); err != nil {
 		return err
@@ -163,6 +168,8 @@ func (cs *ClientsService) GetAllClientsInfo() ([]models.ClientInfo, error) {
 			fiel_expiration,
 			monthly_fee,
 			active,
+			regimen_id,
+			regimen_name,
 			supervisor_id,
 			supervisor_name,
 			responsible_id,
@@ -182,6 +189,9 @@ func (cs *ClientsService) GetAllClientsInfo() ([]models.ClientInfo, error) {
 	}
 	defer rows.Close()
 
+	var lpm sql.NullString
+	var lpd sql.NullString
+	var ua sql.NullString
 	var clients []models.ClientInfo
 	for rows.Next() {
 		var client models.ClientInfo
@@ -194,18 +204,32 @@ func (cs *ClientsService) GetAllClientsInfo() ([]models.ClientInfo, error) {
 			&client.FielExpiration,
 			&client.MonthlyFee,
 			&client.Active,
+			&client.RegimenID,
+			&client.RegimenName,
 			&client.SupervisorID,
 			&client.SupervisorName,
 			&client.ResponsibleID,
 			&client.ResponsibleName,
 			&client.EmisorID,
 			&client.EmisorName,
-			&client.LastPaymentMonth,
-			&client.LastPaymentDate,
-			&client.UpdatedAt,
+			&lpm,
+			&lpd,
+			&ua,
 		); err != nil {
 			return nil, err
 		}
+
+		if lpm.Valid {
+			client.LastPaymentMonth = lpm.String
+		}
+
+		if lpd.Valid {
+			client.LastPaymentDate = lpd.String
+		}
+		if ua.Valid {
+			client.UpdatedAt = ua.String
+		}
+
 		clients = append(clients, client)
 	}
 
@@ -224,6 +248,8 @@ func (cs *ClientsService) GetActiveClientsInfo() ([]models.ClientInfo, error) {
 			fiel_expiration,
 			monthly_fee,
 			active,
+			regimen_id,
+			regimen_name,
 			supervisor_id,
 			supervisor_name,
 			responsible_id,
@@ -243,6 +269,9 @@ func (cs *ClientsService) GetActiveClientsInfo() ([]models.ClientInfo, error) {
 	}
 	defer rows.Close()
 
+	var lpm sql.NullString
+	var lpd sql.NullString
+	var ua sql.NullString
 	var clients []models.ClientInfo
 	for rows.Next() {
 		var client models.ClientInfo
@@ -255,18 +284,32 @@ func (cs *ClientsService) GetActiveClientsInfo() ([]models.ClientInfo, error) {
 			&client.FielExpiration,
 			&client.MonthlyFee,
 			&client.Active,
+			&client.RegimenID,
+			&client.RegimenName,
 			&client.SupervisorID,
 			&client.SupervisorName,
 			&client.ResponsibleID,
 			&client.ResponsibleName,
 			&client.EmisorID,
 			&client.EmisorName,
-			&client.LastPaymentMonth,
-			&client.LastPaymentDate,
-			&client.UpdatedAt,
+			&lpm,
+			&lpd,
+			&ua,
 		); err != nil {
 			return nil, err
 		}
+
+		if lpm.Valid {
+			client.LastPaymentMonth = lpm.String
+		}
+
+		if lpd.Valid {
+			client.LastPaymentDate = lpd.String
+		}
+		if ua.Valid {
+			client.UpdatedAt = ua.String
+		}
+
 		clients = append(clients, client)
 	}
 
@@ -280,6 +323,7 @@ func (cs *ClientsService) GetClientsWithPendingPayments() ([]models.ClientWithPe
 			id,
 			name,
 			rfc,
+			regimen_name,
 			monthly_fee,
 			last_payment_month,
 			last_payment_date,
@@ -298,6 +342,9 @@ func (cs *ClientsService) GetClientsWithPendingPayments() ([]models.ClientWithPe
 	}
 	defer rows.Close()
 
+	var lpm sql.NullString
+	var lpd sql.NullString
+	var ua sql.NullString
 	var clients []models.ClientWithPendingPayment
 	for rows.Next() {
 		var client models.ClientWithPendingPayment
@@ -305,10 +352,11 @@ func (cs *ClientsService) GetClientsWithPendingPayments() ([]models.ClientWithPe
 			&client.ID,
 			&client.Name,
 			&client.RFC,
+			&client.RegimenName,
 			&client.MonthlyFee,
-			&client.LastPaymentMonth,
-			&client.LastPaymentDate,
-			&client.UpdatedAt,
+			&lpm,
+			&lpd,
+			&ua,
 			&client.SupervisorName,
 			&client.ResponsibleName,
 			&client.EmisorName,
@@ -316,6 +364,18 @@ func (cs *ClientsService) GetClientsWithPendingPayments() ([]models.ClientWithPe
 		); err != nil {
 			return nil, err
 		}
+
+		if lpm.Valid {
+			client.LastPaymentMonth = lpm.String
+		}
+
+		if lpd.Valid {
+			client.LastPaymentDate = lpd.String
+		}
+		if ua.Valid {
+			client.UpdatedAt = ua.String
+		}
+
 		clients = append(clients, client)
 	}
 
@@ -327,12 +387,12 @@ func (cs *ClientsService) UpdateClient(clientID string, client models.Client) er
 	q := `
 		UPDATE clients 
 		SET name = $1, rfc = $2, clave_ciec = $3, clave_fiel = $4, 
-		    fiel_expiration = $5, monthly_fee = $6, active = $7
-		WHERE id = $8
+		    fiel_expiration = $5, monthly_fee = $6, regimen_id = $7, active = $8
+		WHERE id = $9
 	`
 
 	_, err := cs.db.Exec(q, client.Name, client.RFC, client.ClaveCIEC, client.ClaveFiel,
-		client.FielExpiration, client.MonthlyFee, client.Active, clientID)
+		client.FielExpiration, client.MonthlyFee, client.RegimenID, client.Active, clientID)
 
 	return err
 }

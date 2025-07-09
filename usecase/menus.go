@@ -28,3 +28,8 @@ func (mi *MenusInteractor) GetSupervisors() ([]models.Supervisor, error) {
 func (mi *MenusInteractor) GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error) {
 	return mi.menusService.GetResponsiblesBySupervisor(supervisorID)
 }
+
+// GetRegimenes retrieves all regimenes
+func (mi *MenusInteractor) GetRegimenes() ([]models.Regimen, error) {
+	return mi.menusService.GetRegimenes()
+}

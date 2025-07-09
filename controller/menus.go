@@ -63,3 +63,17 @@ func (mc *MenusController) GetResponsiblesBySupervisor(g *gin.Context) {
 
 	g.JSON(http.StatusOK, responsibles)
 }
+
+// GetRegimenes retrieves all regimenes
+func (mc *MenusController) GetRegimenes(g *gin.Context) {
+	regimenes, err := mc.menusUseCase.GetRegimenes()
+	if err != nil {
+		mc.logger.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("GetRegimenes(): Error fetching regimenes")
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching regimenes"})
+		return
+	}
+
+	g.JSON(http.StatusOK, regimenes)
+}
