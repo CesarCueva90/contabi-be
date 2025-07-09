@@ -34,6 +34,7 @@ type ClientsUsecase interface {
 	UpdateClientAssignments(clientID string, assignments models.ClientAssignments) error
 	GetClientsWithPendingPayments() ([]models.ClientWithPendingPayment, error)
 	UpdateClientPayment(clientID string, payment models.ClientPayment) error
+	GetClientPayments(clientID string) ([]models.ClientPaymentHistory, error)
 }
 
 type MenusUseCase interface {

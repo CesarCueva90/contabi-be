@@ -34,4 +34,7 @@ func clientsRoutes(r *gin.Engine, clientsController ClientsController) {
 
 	// Updates the payment info of a specific client
 	r.PUT("/clients/:id/payment", clientsController.UpdateClientPayment)
+
+	// Gets the payments history of a specific client
+	r.GET("/clients/:id/payment", clientsController.GetClientPayments)
 }

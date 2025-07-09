@@ -65,3 +65,8 @@ func (ci *ClientsInteractor) GetClientsWithPendingPayments() ([]models.ClientWit
 func (ci *ClientsInteractor) UpdateClientPayment(clientID string, payment models.ClientPayment) error {
 	return ci.clientsService.UpdateClientPayment(clientID, payment)
 }
+
+// GetClientPayments gets the payments history of a specific client
+func (ci *ClientsInteractor) GetClientPayments(clientID string) ([]models.ClientPaymentHistory, error) {
+	return ci.clientsService.GetClientPayments(clientID)
+}

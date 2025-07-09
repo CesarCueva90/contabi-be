@@ -212,3 +212,18 @@ func (cc *ClientsController) UpdateClientPayment(c *gin.Context) {
 
 	c.JSON(http.StatusOK, "Client payment updated successfully")
 }
+
+// GetClientPayments gets the payments history of a specific client
+func (cc *ClientsController) GetClientPayments(c *gin.Context) {
+	clientID := c.Param("id")
+	clients, err := cc.clientsUseCase.GetClientPayments(clientID)
+	if err != nil {
+		cc.logger.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("GetClientPayments(): Error fetching clients payments info")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching clients payments info"})
+		return
+	}
+
+	c.JSON(http.StatusOK, clients)
+}

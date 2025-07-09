@@ -333,7 +333,6 @@ func (cs *ClientsService) GetClientsWithPendingPayments() ([]models.ClientWithPe
 			emisor_name,
 			payment_status
 		FROM clients_with_pending_payments
-		ORDER BY name ASC
 	`
 
 	rows, err := cs.db.Query(q)
@@ -416,11 +415,6 @@ func (cs *ClientsService) UpdateClientPayment(clientID string, payment models.Cl
 	q := `
 		INSERT INTO client_payments (client_id, last_payment_month, last_payment_date)
 		VALUES ($1, $2, $3)
-		ON CONFLICT (client_id) 
-		DO UPDATE SET 
-			last_payment_month = EXCLUDED.last_payment_month,
-			last_payment_date = EXCLUDED.last_payment_date,
-			updated_at = CURRENT_TIMESTAMP
 	`
 
 	_, err := cs.db.Exec(q, clientID, payment.LastPaymentMonth, payment.LastPaymentDate)
@@ -444,4 +438,35 @@ func (cs *ClientsService) ActivateClient(clientID string) error {
 	_, err := cs.db.Exec(q, clientID)
 
 	return err
+}
+
+// GetClientPayments gets the payments history of a specific client
+func (cs *ClientsService) GetClientPayments(clientID string) ([]models.ClientPaymentHistory, error) {
+	q := `
+		SELECT 
+			cp.client_id,
+			c.name,
+			cp.last_payment_month,
+			cp.last_payment_date,
+			c.monthly_fee
+		FROM client_payments cp
+		JOIN clients c ON cp.client_id = c.id
+		WHERE cp.client_id = $1
+		ORDER BY cp.last_payment_month DESC
+	`
+	rows, err := cs.db.Query(q, clientID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var payments []models.ClientPaymentHistory
+	for rows.Next() {
+		var p models.ClientPaymentHistory
+		if err := rows.Scan(&p.ClientID, &p.ClientName, &p.LastPaymentMonth, &p.LastPaymentDate, &p.MonthlyFee); err != nil {
+			return nil, err
+		}
+		payments = append(payments, p)
+	}
+	return payments, nil
 }

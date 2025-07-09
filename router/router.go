@@ -33,6 +33,7 @@ type ClientsController interface {
 	UpdateClientAssignments(c *gin.Context)
 	GetClientsWithPendingPayments(c *gin.Context)
 	UpdateClientPayment(c *gin.Context)
+	GetClientPayments(c *gin.Context)
 }
 
 type MenusController interface {

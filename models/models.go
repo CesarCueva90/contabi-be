@@ -102,3 +102,11 @@ type ClientWithPendingPayment struct {
 	EmisorName       string `json:"emisor_name,omitempty"`
 	PaymentStatus    string `json:"payment_status"`
 }
+
+type ClientPaymentHistory struct {
+	ClientID         string `json:"client_id"`
+	ClientName       string `json:"client_name"`
+	LastPaymentMonth string `json:"last_payment_month"`
+	LastPaymentDate  string `json:"last_payment_date"`
+	MonthlyFee       string `json:"monthly_fee"`
+}
