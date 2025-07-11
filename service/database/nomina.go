@@ -24,15 +24,16 @@ func (ns *NominasService) CreateClientPaymentRecord(clientPaymentRecord models.C
 			, payment_month
 			, amount
 			, paid
+			, month
 		) VALUES (
-			$1, $2, $3, $4, $5
+			$1, $2, $3, $4, $5, $6
 		)
 	`
 
 	_, err := ns.db.Exec(
 		q, clientPaymentRecord.ClientID, clientPaymentRecord.HREntityID,
 		clientPaymentRecord.PaymentMonth, clientPaymentRecord.Amount,
-		clientPaymentRecord.Paid,
+		clientPaymentRecord.Paid, clientPaymentRecord.Month,
 	)
 	if err != nil {
 		return err
@@ -83,7 +84,8 @@ func (ns *NominasService) GetClientPendingPaymentsByHREntityIDDetails(clientID, 
 			chp.hr_entity_id,
 			chp.payment_month,
 			chp.amount,
-			chp.paid
+			chp.paid,
+			chp.month
 		FROM client_hr_payments chp
 		JOIN clients c ON chp.client_id = c.id
 		WHERE chp.hr_entity_id = $1
@@ -103,7 +105,7 @@ func (ns *NominasService) GetClientPendingPaymentsByHREntityIDDetails(clientID, 
 		var p models.ClientWithPendingHRPaymentDetails
 		if err := rows.Scan(
 			&p.ID, &p.ClientID, &p.ClientName, &p.HREntityID,
-			&p.PaymentMonth, &p.Amount, &p.Paid,
+			&p.PaymentMonth, &p.Amount, &p.Paid, &p.Month,
 		); err != nil {
 			return nil, err
 		}
@@ -138,7 +140,8 @@ func (ns *NominasService) GetClientHRPaymentsHistory(clientID, hrEntityID string
 			chp.id,
 			chp.payment_month,
 			chp.amount,
-			chp.paid
+			chp.paid,
+			chp.month
 		FROM client_hr_payments chp
 		WHERE chp.hr_entity_id = $1
 		AND chp.client_id = $2
@@ -155,7 +158,7 @@ func (ns *NominasService) GetClientHRPaymentsHistory(clientID, hrEntityID string
 	for rows.Next() {
 		var p models.ClientHRPayment
 		if err := rows.Scan(
-			&p.ID, &p.PaymentMonth, &p.Amount, &p.Paid,
+			&p.ID, &p.PaymentMonth, &p.Amount, &p.Paid, &p.Month,
 		); err != nil {
 			return nil, err
 		}

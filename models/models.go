@@ -118,6 +118,7 @@ type ClientHRPayment struct {
 	PaymentMonth string  `json:"payment_month"`
 	Amount       float64 `json:"amount"`
 	Paid         bool    `json:"paid"`
+	Month        string  `json:"month"`
 }
 
 type ClientWithPendingHRPaymentDetails struct {
@@ -128,6 +129,7 @@ type ClientWithPendingHRPaymentDetails struct {
 	PaymentMonth string  `json:"payment_month"`
 	Amount       float64 `json:"amount"`
 	Paid         bool    `json:"paid"`
+	Month        string  `json:"month"`
 }
 
 type ClientWithPendingHRPayment struct {
