@@ -44,3 +44,11 @@ type MenusService interface {
 	GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error)
 	GetRegimenes() ([]models.Regimen, error)
 }
+
+type NominasService interface {
+	CreateClientPaymentRecord(clientPaymentRecord models.ClientHRPayment) error
+	GetClientsWithPendingPaymentsByHREntityID(hrEntityID string) ([]models.ClientWithPendingHRPayment, error)
+	GetClientPendingPaymentsByHREntityIDDetails(clientID, hrEntityID string) ([]models.ClientWithPendingHRPaymentDetails, error)
+	UpdateClientPaymentRecord(clientPaymentRecord models.UpdateClientHRPayment) error
+	GetClientHRPaymentsHistory(clientID, hrEntityID string) ([]models.ClientHRPayment, error)
+}

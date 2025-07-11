@@ -44,22 +44,32 @@ type MenusUseCase interface {
 	GetRegimenes() ([]models.Regimen, error)
 }
 
+type NominasUseCase interface {
+	CreateClientPaymentRecord(clientPaymentRecord models.ClientHRPayment) error
+	GetClientsWithPendingPaymentsByHREntityID(hrEntityID string) ([]models.ClientWithPendingHRPayment, error)
+	GetClientPendingPaymentsByHREntityIDDetails(clientID, hrEntityID string) ([]models.ClientWithPendingHRPaymentDetails, error)
+	UpdateClientPaymentRecord(clientPaymentRecord models.UpdateClientHRPayment) error
+	GetClientHRPaymentsHistory(clientID, hrEntityID string) ([]models.ClientHRPayment, error)
+}
+
 // Controller
 type Controller struct {
 	lu     LoginUseCase
 	uu     UsersUseCase
 	cu     ClientsUsecase
 	mu     MenusUseCase
+	nu     NominasUseCase
 	logger *logrus.Logger
 }
 
 // NewController creates a new Controllert instance
-func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, mu MenusUseCase, logger *logrus.Logger) *Controller {
+func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, mu MenusUseCase, nu NominasUseCase, logger *logrus.Logger) *Controller {
 	return &Controller{
 		lu:     lu,
 		uu:     uu,
 		cu:     cu,
 		mu:     mu,
+		nu:     nu,
 		logger: logger,
 	}
 }

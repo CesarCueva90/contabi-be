@@ -110,3 +110,33 @@ type ClientPaymentHistory struct {
 	LastPaymentDate  string `json:"last_payment_date"`
 	MonthlyFee       string `json:"monthly_fee"`
 }
+
+type ClientHRPayment struct {
+	ID           string  `json:"id"`
+	ClientID     string  `json:"client_id"`
+	HREntityID   string  `json:"hr_entity_id"`
+	PaymentMonth string  `json:"payment_month"`
+	Amount       float64 `json:"amount"`
+	Paid         bool    `json:"paid"`
+}
+
+type ClientWithPendingHRPaymentDetails struct {
+	ID           string  `json:"payment_id"`
+	ClientID     string  `json:"client_id"`
+	ClientName   string  `json:"client_name"`
+	HREntityID   string  `json:"hr_entity_id"`
+	PaymentMonth string  `json:"payment_month"`
+	Amount       float64 `json:"amount"`
+	Paid         bool    `json:"paid"`
+}
+
+type ClientWithPendingHRPayment struct {
+	ClientID   string `json:"client_id"`
+	ClientName string `json:"client_name"`
+	HREntityID string `json:"hr_entity_id"`
+}
+
+type UpdateClientHRPayment struct {
+	ID   string `json:"id"`
+	Paid string `json:"paid"`
+}

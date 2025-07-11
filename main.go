@@ -40,18 +40,21 @@ func main() {
 	us := database.NewUsersService(dbs.DB)
 	cs := database.NewClientsService(dbs.DB)
 	ms := database.NewMenusService(dbs.DB)
+	ns := database.NewNominasService(dbs.DB)
 
 	// creates instances of usecase
 	lu := usecase.NewLoginUseCase(ls)
 	uu := usecase.NewUsersUseCase(us)
 	cu := usecase.NewClientsUseCase(cs)
 	mu := usecase.NewMenusUseCase(ms)
+	nu := usecase.NewNominasUseCase(ns)
 
 	// creates instances of controller
 	lc := controller.NewLoginController(lu, logger)
 	uc := controller.NewUsersController(uu, logger)
 	cc := controller.NewClientsController(cu, logger)
 	mc := controller.NewMenusController(mu, logger)
+	nc := controller.NewNominasController(nu, logger)
 	mw := middleware.New(lu)
 
 	// creates router instance
@@ -60,6 +63,7 @@ func main() {
 		uc,
 		cc,
 		mc,
+		nc,
 		mw,
 	)
 

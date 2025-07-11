@@ -43,12 +43,21 @@ type MenusController interface {
 	GetRegimenes(g *gin.Context)
 }
 
+type NominasController interface {
+	CreateClientPaymentRecord(g *gin.Context)
+	GetClientsWithPendingPaymentsByHREntityID(g *gin.Context)
+	GetClientPendingPaymentsByHREntityIDDetails(g *gin.Context)
+	UpdateClientPaymentRecord(g *gin.Context)
+	GetClientHRPaymentsHistory(g *gin.Context)
+}
+
 // NewRouter set the API routes and applies the middleware
 func NewRouter(
 	loginController LoginController,
 	usersController UsersController,
 	clientsController ClientsController,
 	menusController MenusController,
+	nominasController NominasController,
 	mw *middleware.Middleware,
 ) *gin.Engine {
 	// Creates a new instance of Gin router
@@ -68,6 +77,8 @@ func NewRouter(
 	clientsRoutes(r, clientsController)
 
 	menusRoutes(r, menusController)
+
+	nominasRouter(r, nominasController)
 
 	return r
 }
