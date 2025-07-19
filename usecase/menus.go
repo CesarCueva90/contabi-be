@@ -33,3 +33,13 @@ func (mi *MenusInteractor) GetResponsiblesBySupervisor(supervisorID string) ([]m
 func (mi *MenusInteractor) GetRegimenes() ([]models.Regimen, error) {
 	return mi.menusService.GetRegimenes()
 }
+
+// GetAccountancyTypes retrieves all accountancy types
+func (mi *MenusInteractor) GetAccountancyTypes() ([]models.AccountancyType, error) {
+	return mi.menusService.GetAccountancyTypes()
+}
+
+// GetAccountancyStatuses retrieves all accountancy assignment statuses
+func (mi *MenusInteractor) GetAccountancyStatuses() ([]models.AccountancyAssignmentStatus, error) {
+	return mi.menusService.GetAccountancyStatuses()
+}

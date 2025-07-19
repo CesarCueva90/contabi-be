@@ -41,6 +41,8 @@ type MenusController interface {
 	GetSupervisors(g *gin.Context)
 	GetResponsiblesBySupervisor(g *gin.Context)
 	GetRegimenes(g *gin.Context)
+	GetAccountancyTypes(g *gin.Context)
+	GetAccountancyStatuses(g *gin.Context)
 }
 
 type NominasController interface {
@@ -51,6 +53,16 @@ type NominasController interface {
 	GetClientHRPaymentsHistory(g *gin.Context)
 }
 
+type AccountancyController interface {
+	GetClientsBySupervisor(g *gin.Context)
+	GetClientAssignmentsMatrix(g *gin.Context)
+	UpdateClientAssignments(g *gin.Context)
+	GetClientsByResonsible(g *gin.Context)
+	CreateClientAccountancyStatusWithAssignments(g *gin.Context)
+	UpdateClientAccountancyStatusWithAssignments(g *gin.Context)
+	GetClientAccountancyHistory(g *gin.Context)
+}
+
 // NewRouter set the API routes and applies the middleware
 func NewRouter(
 	loginController LoginController,
@@ -58,6 +70,7 @@ func NewRouter(
 	clientsController ClientsController,
 	menusController MenusController,
 	nominasController NominasController,
+	accountancyController AccountancyController,
 	mw *middleware.Middleware,
 ) *gin.Engine {
 	// Creates a new instance of Gin router
@@ -79,6 +92,8 @@ func NewRouter(
 	menusRoutes(r, menusController)
 
 	nominasRouter(r, nominasController)
+
+	accountancyRoutes(r, accountancyController)
 
 	return r
 }

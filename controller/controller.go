@@ -42,6 +42,8 @@ type MenusUseCase interface {
 	GetSupervisors() ([]models.Supervisor, error)
 	GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error)
 	GetRegimenes() ([]models.Regimen, error)
+	GetAccountancyTypes() ([]models.AccountancyType, error)
+	GetAccountancyStatuses() ([]models.AccountancyAssignmentStatus, error)
 }
 
 type NominasUseCase interface {
@@ -52,6 +54,16 @@ type NominasUseCase interface {
 	GetClientHRPaymentsHistory(clientID, hrEntityID string) ([]models.ClientHRPayment, error)
 }
 
+type AccountancyUseCase interface {
+	GetClientsBySupervisor(supervisorID string) ([]models.AccountancyClientInfo, error)
+	GetClientAssignmentsMatrix() ([]models.ClientAssignmentMatrixRow, error)
+	UpdateClientAssignments(clientID string, assignments []models.AssignmentSelection) error
+	GetClientsByResonsible(responsibleID string) ([]models.AccountancyClientInfo, error)
+	CreateClientAccountancyStatusWithAssignments(status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
+	UpdateClientAccountancyStatusWithAssignments(statusID int, clientID string, status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
+	GetClientAccountancyHistory(clientID string) (models.ClientAccountancyHistoryWithAssignments, error)
+}
+
 // Controller
 type Controller struct {
 	lu     LoginUseCase
@@ -59,17 +71,19 @@ type Controller struct {
 	cu     ClientsUsecase
 	mu     MenusUseCase
 	nu     NominasUseCase
+	au     AccountancyUseCase
 	logger *logrus.Logger
 }
 
 // NewController creates a new Controllert instance
-func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, mu MenusUseCase, nu NominasUseCase, logger *logrus.Logger) *Controller {
+func NewController(lu LoginUseCase, uu UsersUseCase, cu ClientsUsecase, mu MenusUseCase, nu NominasUseCase, au AccountancyUseCase, logger *logrus.Logger) *Controller {
 	return &Controller{
 		lu:     lu,
 		uu:     uu,
 		cu:     cu,
 		mu:     mu,
 		nu:     nu,
+		au:     au,
 		logger: logger,
 	}
 }

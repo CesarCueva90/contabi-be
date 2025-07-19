@@ -141,3 +141,63 @@ func (ms *MenusService) GetRegimenes() ([]models.Regimen, error) {
 
 	return regimenes, nil
 }
+
+// GetAccountancyTypes retrieves all accountancy types
+func (ms *MenusService) GetAccountancyTypes() ([]models.AccountancyType, error) {
+	q := `
+		SELECT 
+			at.id
+			, at.name
+		FROM accountancy_types at
+		WHERE at.active = true
+		ORDER BY name ASC
+	`
+
+	rows, err := ms.db.Query(q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var accountancyTypes []models.AccountancyType
+	for rows.Next() {
+		var at models.AccountancyType
+		if err := rows.Scan(&at.ID, &at.Name); err != nil {
+			return nil, err
+		}
+
+		accountancyTypes = append(accountancyTypes, at)
+	}
+
+	return accountancyTypes, nil
+}
+
+// GetAccountancyStatuses retrieves all accountancy assignment statuses
+func (ms *MenusService) GetAccountancyStatuses() ([]models.AccountancyAssignmentStatus, error) {
+	q := `
+		SELECT 
+			at.id
+			, at.name
+		FROM assignment_statuses at
+		WHERE at.active = true
+		ORDER BY name ASC
+	`
+
+	rows, err := ms.db.Query(q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var statuses []models.AccountancyAssignmentStatus
+	for rows.Next() {
+		var aas models.AccountancyAssignmentStatus
+		if err := rows.Scan(&aas.ID, &aas.Name); err != nil {
+			return nil, err
+		}
+
+		statuses = append(statuses, aas)
+	}
+
+	return statuses, nil
+}

@@ -142,3 +142,78 @@ type UpdateClientHRPayment struct {
 	ID   string `json:"id"`
 	Paid string `json:"paid"`
 }
+
+// ACCOUNTANCY
+
+type AccountancyType struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type AccountancyAssignmentStatus struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// AccountancyClientInfo represents the accountancy info of all the clients
+type AccountancyClientInfo struct {
+	ID              string `json:"id"`
+	Name            string `json:"name"`
+	RFC             string `json:"rfc"`
+	RegimenName     string `json:"regimen_name"`
+	RegimenID       string `json:"regimen_id"`
+	ClaveCIEC       string `json:"clave_ciec"`
+	ClaveFiel       string `json:"clave_fiel"`
+	FielExpiration  string `json:"fiel_expiration"`
+	ResponsibleID   string `json:"responsible_id,omitempty"`
+	ResponsibleName string `json:"responsible_name,omitempty"`
+	EmisorID        string `json:"emisor_id,omitempty"`
+	EmisorName      string `json:"emisor_name,omitempty"`
+}
+
+// ClientAssignmentMatrixRow represents a row in the client-assignment matrix for the frontend
+// Each row is a client-assignment pair with a boolean indicating if the client has that assignment type
+// Useful for building a dynamic table in the frontend
+type ClientAssignmentMatrixRow struct {
+	ClientID           string `json:"client_id"`
+	ClientName         string `json:"client_name"`
+	AssignmentTypeID   int    `json:"assignment_type_id"`
+	AssignmentTypeName string `json:"assignment_type_name"`
+	Selected           bool   `json:"selected"`
+}
+
+type AssignmentSelection struct {
+	AssignmentTypeID int  `json:"assignment_type_id"`
+	Selected         bool `json:"selected"`
+}
+
+// ACCOUNTANCY STATUS
+
+type ClientAccountancyStatus struct {
+	ID          int    `json:"id"`
+	ClientID    string `json:"client_id"`
+	Month       string `json:"month"`              // YYYY-MM-DD
+	DueDate     string `json:"due_date,omitempty"` // YYYY-MM-DD
+	Observacion string `json:"observaciones,omitempty"`
+}
+
+type ClientAccountancyAssignment struct {
+	ID                   int    `json:"id"`
+	StatusID             int    `json:"status_id"`
+	AssignmentTypeID     int    `json:"assignment_type_id"`
+	AssignmentTypeName   string `json:"assignment_type_name"`
+	AssignmentStatusID   int    `json:"assignment_status_id"`
+	AssignmentStatusName string `json:"assignment_status_name"`
+}
+
+type ClientAccountancyHistoryEntry struct {
+	Status      ClientAccountancyStatus       `json:"status"`
+	Assignments []ClientAccountancyAssignment `json:"assignments"`
+}
+
+// Estructura para devolver el historial y los tipos de asignaciones activas
+
+type ClientAccountancyHistoryWithAssignments struct {
+	History           []ClientAccountancyHistoryEntry `json:"history"`
+	ActiveAssignments []AccountancyType               `json:"active_assignments"`
+}

@@ -77,3 +77,31 @@ func (mc *MenusController) GetRegimenes(g *gin.Context) {
 
 	g.JSON(http.StatusOK, regimenes)
 }
+
+// GetAccountancyTypes retrieves all accountancy types
+func (mc *MenusController) GetAccountancyTypes(g *gin.Context) {
+	accountancyTypes, err := mc.menusUseCase.GetAccountancyTypes()
+	if err != nil {
+		mc.logger.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("GetAccountancyTypes(): Error fetching accountancy types")
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "Error accountancy types"})
+		return
+	}
+
+	g.JSON(http.StatusOK, accountancyTypes)
+}
+
+// GetAccountancyStatuses retrieves all accountancy assignment statuses
+func (mc *MenusController) GetAccountancyStatuses(g *gin.Context) {
+	statuses, err := mc.menusUseCase.GetAccountancyStatuses()
+	if err != nil {
+		mc.logger.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("GetAccountancyStatuses(): Error fetching accountancy assignment statuses")
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "Error accountancy assignment statuses"})
+		return
+	}
+
+	g.JSON(http.StatusOK, statuses)
+}

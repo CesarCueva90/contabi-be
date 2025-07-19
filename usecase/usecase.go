@@ -43,6 +43,8 @@ type MenusService interface {
 	GetSupervisors() ([]models.Supervisor, error)
 	GetResponsiblesBySupervisor(supervisorID string) ([]models.Responsible, error)
 	GetRegimenes() ([]models.Regimen, error)
+	GetAccountancyTypes() ([]models.AccountancyType, error)
+	GetAccountancyStatuses() ([]models.AccountancyAssignmentStatus, error)
 }
 
 type NominasService interface {
@@ -51,4 +53,14 @@ type NominasService interface {
 	GetClientPendingPaymentsByHREntityIDDetails(clientID, hrEntityID string) ([]models.ClientWithPendingHRPaymentDetails, error)
 	UpdateClientPaymentRecord(clientPaymentRecord models.UpdateClientHRPayment) error
 	GetClientHRPaymentsHistory(clientID, hrEntityID string) ([]models.ClientHRPayment, error)
+}
+
+type AccountancyService interface {
+	GetClientsBySupervisor(supervisorID string) ([]models.AccountancyClientInfo, error)
+	GetClientAssignmentsMatrix() ([]models.ClientAssignmentMatrixRow, error)
+	UpdateClientAssignments(clientID string, assignments []models.AssignmentSelection) error
+	GetClientsByResonsible(responsibleID string) ([]models.AccountancyClientInfo, error)
+	CreateClientAccountancyStatusWithAssignments(status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
+	UpdateClientAccountancyStatusWithAssignments(statusID int, clientID string, status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
+	GetClientAccountancyHistory(clientID string) (models.ClientAccountancyHistoryWithAssignments, error)
 }

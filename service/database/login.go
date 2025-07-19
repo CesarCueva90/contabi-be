@@ -49,6 +49,7 @@ func (ls *LoginService) Login(login string, password string) (models.User, error
 
 	// Compare the hashed password with the provided password using bcrypt
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		fmt.Printf("DEBUG: username=%s, password='%s', hash='%s', hashlen=%d, passlen=%d\n", user.Username, password, user.Password, len(user.Password), len(password))
 		return models.User{}, fmt.Errorf("invalid password")
 	}
 
