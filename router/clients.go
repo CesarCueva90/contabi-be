@@ -15,7 +15,7 @@ func clientsRoutes(r *gin.Engine, clientsController ClientsController) {
 	r.GET("/clients/:id", clientsController.GetClientInfo)
 
 	// Creates a new client with assignments
-	r.POST("/clients/", clientsController.CreateClient)
+	r.POST("/clients", clientsController.CreateClient)
 
 	// Updates the basic info of a client
 	r.PUT("/clients/:id", clientsController.UpdateClient)
