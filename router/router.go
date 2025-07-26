@@ -61,6 +61,7 @@ type AccountancyController interface {
 	CreateClientAccountancyStatusWithAssignments(g *gin.Context)
 	UpdateClientAccountancyStatusWithAssignments(g *gin.Context)
 	GetClientAccountancyHistory(g *gin.Context)
+	GetAllClients(g *gin.Context)
 }
 
 // NewRouter set the API routes and applies the middleware

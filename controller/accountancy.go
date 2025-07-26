@@ -175,3 +175,17 @@ func (ac *AccountancyController) UpdateClientAccountancyStatusWithAssignments(g 
 
 	g.JSON(http.StatusOK, "Client accountancy status and assignments updated successfully")
 }
+
+// GetAllClients retrieves all the clients
+func (ac *AccountancyController) GetAllClients(g *gin.Context) {
+	clients, err := ac.accountancyUseCase.GetAllClients()
+	if err != nil {
+		ac.logger.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("GetAllClients(): Error fetching clients info")
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching clients info"})
+		return
+	}
+
+	g.JSON(http.StatusOK, clients)
+}

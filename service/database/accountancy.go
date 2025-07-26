@@ -375,3 +375,58 @@ func (as *AccountancyService) GetClientAccountancyHistory(clientID string) (mode
 
 	return result, nil
 }
+
+// GetAllClients retrieves all the clients
+func (as *AccountancyService) GetAllClients() ([]models.AccountancyClientInfo, error) {
+	q := `
+		SELECT DISTINCT
+			id,
+			name,
+			rfc,
+			clave_ciec,
+			clave_fiel,
+			fiel_expiration,
+			regimen_id,
+			regimen_name,
+			supervisor_id,
+			supervisor_name,
+			responsible_id,
+			responsible_name,
+			emisor_id,
+			emisor_name
+		FROM client_info_view
+		WHERE active = true
+	`
+	rows, err := as.db.Query(q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var clients []models.AccountancyClientInfo
+	for rows.Next() {
+		var client models.AccountancyClientInfo
+		if err := rows.Scan(
+			&client.ID,
+			&client.Name,
+			&client.RFC,
+			&client.ClaveCIEC,
+			&client.ClaveFiel,
+			&client.FielExpiration,
+			&client.RegimenID,
+			&client.RegimenName,
+			&client.SupervisorID,
+			&client.SupervisorName,
+			&client.ResponsibleID,
+			&client.ResponsibleName,
+			&client.EmisorID,
+			&client.EmisorName,
+		); err != nil {
+			return clients, err
+		}
+
+		clients = append(clients, client)
+	}
+
+	return clients, nil
+}

@@ -48,3 +48,8 @@ func (ai *AccountancyInteractor) GetClientAccountancyHistory(clientID string) (m
 func (ai *AccountancyInteractor) UpdateClientAccountancyStatusWithAssignments(statusID int, clientID string, status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error {
 	return ai.accountancyService.UpdateClientAccountancyStatusWithAssignments(statusID, clientID, status, assignments)
 }
+
+// GetAllClients retrieves all the clients
+func (ai *AccountancyInteractor) GetAllClients() ([]models.AccountancyClientInfo, error) {
+	return ai.accountancyService.GetAllClients()
+}

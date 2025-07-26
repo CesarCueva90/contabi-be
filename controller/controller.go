@@ -62,6 +62,7 @@ type AccountancyUseCase interface {
 	CreateClientAccountancyStatusWithAssignments(status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
 	UpdateClientAccountancyStatusWithAssignments(statusID int, clientID string, status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
 	GetClientAccountancyHistory(clientID string) (models.ClientAccountancyHistoryWithAssignments, error)
+	GetAllClients() ([]models.AccountancyClientInfo, error)
 }
 
 // Controller

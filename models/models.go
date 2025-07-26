@@ -165,6 +165,8 @@ type AccountancyClientInfo struct {
 	ClaveCIEC       string `json:"clave_ciec"`
 	ClaveFiel       string `json:"clave_fiel"`
 	FielExpiration  string `json:"fiel_expiration"`
+	SupervisorID    string `json:"supervisor_id,omitempty"`
+	SupervisorName  string `json:"supervisor_name,omitempty"`
 	ResponsibleID   string `json:"responsible_id,omitempty"`
 	ResponsibleName string `json:"responsible_name,omitempty"`
 	EmisorID        string `json:"emisor_id,omitempty"`

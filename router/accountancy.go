@@ -12,4 +12,5 @@ func accountancyRoutes(r *gin.Engine, accountancyController AccountancyControlle
 	r.POST("/accountancy/clients/history/record", accountancyController.CreateClientAccountancyStatusWithAssignments)
 	r.PUT("/accountancy/client/:client_id/status/:status_id", accountancyController.UpdateClientAccountancyStatusWithAssignments)
 	r.GET("/accountancy/client/:client_id/history", accountancyController.GetClientAccountancyHistory)
+	r.GET("/accountancy/clients/all", accountancyController.GetAllClients)
 }
