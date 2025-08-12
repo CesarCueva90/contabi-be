@@ -61,6 +61,7 @@ type ClientPayment struct {
 	ClientName       string `json:"client_name"`
 	LastPaymentMonth string `json:"last_payment_month"`
 	LastPaymentDate  string `json:"last_payment_date"`
+	FolioFactura     string `json:"folio_factura"`
 	UpdatedAt        string `json:"updated_at"`
 }
 
@@ -109,6 +110,7 @@ type ClientPaymentHistory struct {
 	LastPaymentMonth string `json:"last_payment_month"`
 	LastPaymentDate  string `json:"last_payment_date"`
 	MonthlyFee       string `json:"monthly_fee"`
+	FolioFactura     string `json:"folio_factura,omitempty"`
 }
 
 type ClientHRPayment struct {

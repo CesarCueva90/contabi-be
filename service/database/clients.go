@@ -413,11 +413,11 @@ func (cs *ClientsService) UpdateClientAssignments(clientID string, assignments m
 // UpdateClientPayment updates client payment information
 func (cs *ClientsService) UpdateClientPayment(clientID string, payment models.ClientPayment) error {
 	q := `
-		INSERT INTO client_payments (client_id, last_payment_month, last_payment_date)
-		VALUES ($1, $2, $3)
+		INSERT INTO client_payments (client_id, last_payment_month, last_payment_date, folio_factura)
+		VALUES ($1, $2, $3, $4)
 	`
 
-	_, err := cs.db.Exec(q, clientID, payment.LastPaymentMonth, payment.LastPaymentDate)
+	_, err := cs.db.Exec(q, clientID, payment.LastPaymentMonth, payment.LastPaymentDate, payment.FolioFactura)
 
 	return err
 }
@@ -448,7 +448,8 @@ func (cs *ClientsService) GetClientPayments(clientID string) ([]models.ClientPay
 			c.name,
 			cp.last_payment_month,
 			cp.last_payment_date,
-			c.monthly_fee
+			c.monthly_fee,
+			cp.folio_factura
 		FROM client_payments cp
 		JOIN clients c ON cp.client_id = c.id
 		WHERE cp.client_id = $1
@@ -460,12 +461,17 @@ func (cs *ClientsService) GetClientPayments(clientID string) ([]models.ClientPay
 	}
 	defer rows.Close()
 
+	var ff sql.NullString
 	var payments []models.ClientPaymentHistory
 	for rows.Next() {
 		var p models.ClientPaymentHistory
-		if err := rows.Scan(&p.ClientID, &p.ClientName, &p.LastPaymentMonth, &p.LastPaymentDate, &p.MonthlyFee); err != nil {
+		if err := rows.Scan(&p.ClientID, &p.ClientName, &p.LastPaymentMonth, &p.LastPaymentDate, &p.MonthlyFee, &ff); err != nil {
 			return nil, err
 		}
+		if ff.Valid {
+			p.FolioFactura = ff.String
+		}
+
 		payments = append(payments, p)
 	}
 	return payments, nil
