@@ -430,3 +430,17 @@ func (as *AccountancyService) GetAllClients() ([]models.AccountancyClientInfo, e
 
 	return clients, nil
 }
+
+// GetAllClients retrieves all the clients
+func (as *AccountancyService) UpdateClientResponsible(clientID string, responsibleID string) error {
+	q := `
+		UPDATE client_assignments
+		SET responsible_id = $1
+		WHERE client_id = $2
+	`
+	_, err := as.db.Exec(q, responsibleID, clientID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

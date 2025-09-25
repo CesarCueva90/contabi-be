@@ -64,4 +64,5 @@ type AccountancyService interface {
 	UpdateClientAccountancyStatusWithAssignments(statusID int, clientID string, status models.ClientAccountancyStatus, assignments []models.ClientAccountancyAssignment) error
 	GetClientAccountancyHistory(clientID string) (models.ClientAccountancyHistoryWithAssignments, error)
 	GetAllClients() ([]models.AccountancyClientInfo, error)
+	UpdateClientResponsible(clientID string, responsibleID string) error
 }

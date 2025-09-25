@@ -13,4 +13,5 @@ func accountancyRoutes(r *gin.Engine, accountancyController AccountancyControlle
 	r.PUT("/accountancy/client/:client_id/status/:status_id", accountancyController.UpdateClientAccountancyStatusWithAssignments)
 	r.GET("/accountancy/client/:client_id/history", accountancyController.GetClientAccountancyHistory)
 	r.GET("/accountancy/clients/all", accountancyController.GetAllClients)
+	r.PUT("/accountancy/client/:client_id/responsible/:responsible_id", accountancyController.UpdateClientResponsible)
 }

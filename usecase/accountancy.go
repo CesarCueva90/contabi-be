@@ -53,3 +53,8 @@ func (ai *AccountancyInteractor) UpdateClientAccountancyStatusWithAssignments(st
 func (ai *AccountancyInteractor) GetAllClients() ([]models.AccountancyClientInfo, error) {
 	return ai.accountancyService.GetAllClients()
 }
+
+// UpdateClientResponsible updates the responsible of a client
+func (ai *AccountancyInteractor) UpdateClientResponsible(clientID string, responsibleID string) error {
+	return ai.accountancyService.UpdateClientResponsible(clientID, responsibleID)
+}

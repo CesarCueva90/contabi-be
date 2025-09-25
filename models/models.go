@@ -221,3 +221,8 @@ type ClientAccountancyHistoryWithAssignments struct {
 	History           []ClientAccountancyHistoryEntry `json:"history"`
 	ActiveAssignments []AccountancyType               `json:"active_assignments"`
 }
+
+type UpdateClientResponsible struct {
+	ResponsibleID string `json:"responsible_id"`
+	ClientID      string `json:"client_id"`
+}

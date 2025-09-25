@@ -189,3 +189,20 @@ func (ac *AccountancyController) GetAllClients(g *gin.Context) {
 
 	g.JSON(http.StatusOK, clients)
 }
+
+// UpdateClientResponsible updates the responsible of a client
+func (ac *AccountancyController) UpdateClientResponsible(g *gin.Context) {
+	clientID := g.Param("client_id")
+	responsibleID := g.Param("responsible_id")
+
+	err := ac.accountancyUseCase.UpdateClientResponsible(clientID, responsibleID)
+	if err != nil {
+		ac.logger.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("UpdateClientResponsible(): Error updating client responsible")
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating client responsible"})
+		return
+	}
+
+	g.JSON(http.StatusOK, "Client responsible updated successfully")
+}
