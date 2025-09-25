@@ -119,12 +119,13 @@ func (ns *NominasService) GetClientPendingPaymentsByHREntityIDDetails(clientID, 
 func (ns *NominasService) UpdateClientPaymentRecord(clientPaymentRecord models.UpdateClientHRPayment) error {
 	q := `
 		UPDATE client_hr_payments 
-		SET paid = $1
-		WHERE id = $2 
+		SET paid = $1, payment_month = $2, amount = $3, month = $4
+		WHERE id = $5
 	`
 
 	_, err := ns.db.Exec(
-		q, clientPaymentRecord.Paid, clientPaymentRecord.ID,
+		q, clientPaymentRecord.Paid, clientPaymentRecord.PaymentMonth,
+		clientPaymentRecord.Amount, clientPaymentRecord.Month, clientPaymentRecord.ID,
 	)
 	if err != nil {
 		return err

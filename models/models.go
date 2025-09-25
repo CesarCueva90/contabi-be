@@ -141,8 +141,11 @@ type ClientWithPendingHRPayment struct {
 }
 
 type UpdateClientHRPayment struct {
-	ID   string `json:"id"`
-	Paid string `json:"paid"`
+	ID           string  `json:"id"`
+	PaymentMonth string  `json:"payment_month"`
+	Amount       float64 `json:"amount"`
+	Month        string  `json:"month"`
+	Paid         string  `json:"paid"`
 }
 
 // ACCOUNTANCY
